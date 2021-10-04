@@ -15,7 +15,7 @@ namespace Polynomial
         public Polynomial(string s)
         {
             //first group is a minus sign, second is a value and third is a power
-            var coefs = Regex.Matches(s, @"(-)? ?(\d+(?:.\d+)?)(?:\*x\^(\d+))?");
+            var coefs = Regex.Matches(s, @"(-)? ?(\d+(?:.\d+)?)(?:\*?x\^(\d+))?");
             _coefs = new double[int.Parse(coefs[^1].Groups[3].Value) + 1];
 
             _coefs[coefs[0].Groups[3].Success ? int.Parse(coefs[0].Groups[3].Value) : 0] =
