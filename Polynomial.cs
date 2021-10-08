@@ -30,6 +30,7 @@ namespace Polynomial
 
         public Polynomial(params double[] coefficients)
         {
+            Console.WriteLine("Created new poly");
             _coefs = coefficients.Clone() as double[];
         }
 
@@ -55,17 +56,22 @@ namespace Polynomial
             }
         }
 
+        public static Polynomial operator +(Polynomial p) => p;
+
+        public static Polynomial operator -(Polynomial p) =>
+            (p.Clone() as Polynomial).Multiply(-1);
+
         public static Polynomial operator +(Polynomial p1, Polynomial p2) =>
-            ((Polynomial)p1.Clone()).Add(p2);
+            (p1.Clone() as Polynomial).Add(p2);
 
         public static Polynomial operator -(Polynomial p1, Polynomial p2) =>
-            ((Polynomial)p1.Clone()).Subtract(p2);
+            (p1.Clone() as Polynomial).Subtract(p2);
 
         public static Polynomial operator *(Polynomial p1, Polynomial p2) =>
-            ((Polynomial)p1.Clone()).Multiply(p2);
+            (p1.Clone() as Polynomial).Multiply(p2);
 
         public static Polynomial operator *(Polynomial p1, double num) =>
-            ((Polynomial)p1.Clone()).Multiply(num);
+            (p1.Clone() as Polynomial).Multiply(num);
 
         public override string ToString()
         {
@@ -89,7 +95,7 @@ namespace Polynomial
             return this;
         }
 
-        public Polynomial Subtract(Polynomial other) => Multiply(-1).Add(other);
+        public Polynomial Subtract(Polynomial other) => Add(-other);
 
         public Polynomial Multiply(Polynomial other)
         {
