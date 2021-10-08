@@ -58,8 +58,7 @@ namespace Polynomial
 
         public static Polynomial operator +(Polynomial p) => p;
 
-        public static Polynomial operator -(Polynomial p) =>
-            (p.Clone() as Polynomial).Multiply(-1);
+        public static Polynomial operator -(Polynomial p) => p * -1;
 
         public static Polynomial operator +(Polynomial p1, Polynomial p2) =>
             (p1.Clone() as Polynomial).Add(p2);
