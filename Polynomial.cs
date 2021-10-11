@@ -72,6 +72,8 @@ namespace Polynomial
         public static Polynomial operator *(Polynomial p1, double num) =>
             (p1.Clone() as Polynomial).Multiply(num);
 
+        public static implicit operator Polynomial(double d) => new Polynomial(d);
+
         public override string ToString()
         {
             var result = new List<string>(_coefs.Length);
