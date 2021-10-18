@@ -89,10 +89,18 @@ namespace Polynomial
 
         public Polynomial Add(Polynomial other)
         {
+            if (_coefs.Length < other._coefs.Length)
+            {
+                double[] coefs = new double[other._coefs.Length];
+                for (int i = 0; i < _coefs.Length; ++i) coefs[i] = _coefs[i];
+                _coefs = coefs;
+            }
+
             for (int i = 0; i < Math.Min(_coefs.Length, other._coefs.Length); ++i)
             {
                 _coefs[i] += other[i];
             }
+
             return this;
         }
 
