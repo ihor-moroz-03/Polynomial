@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Polynomial
 {
@@ -14,23 +10,11 @@ namespace Polynomial
 
         public Polynomial(string s)
         {
-            //first group is a minus sign, second is a value and third is a power
-            var coefs = Regex.Matches(s, @"(-)? ?(\d+(?:.\d+)?)(?:\*?x\^(\d+))?");
-            _coefs = new double[int.Parse(coefs[^1].Groups[3].Value) + 1];
-
-            _coefs[coefs[0].Groups[3].Success ? int.Parse(coefs[0].Groups[3].Value) : 0] =
-                double.Parse(coefs[0].Groups[1].Value + coefs[0].Groups[2].Value);
-
-            for (int i = 1; i < coefs.Count; ++i)
-            {
-                _coefs[int.Parse(coefs[i].Groups[3].Value)] =
-                    double.Parse(coefs[i].Groups[1].Value + coefs[i].Groups[2].Value);
-            }
+            _coefs = Parse(s)._coefs;
         }
 
         public Polynomial(params double[] coefficients)
         {
-            Console.WriteLine("Created new poly");
             _coefs = coefficients.Clone() as double[];
         }
 
@@ -40,7 +24,23 @@ namespace Polynomial
             set => _coefs[index] = value;
         }
 
-        public static Polynomial Parse(string s) => new Polynomial(s);
+        //public static Polynomial Parse(string s) => new Polynomial(s);
+        public static Polynomial Parse(string s)
+        {
+            //first group is a minus sign, second is a value and third is a power
+            var matches = Regex.Matches(s, @"(-)? ?(\d+(?:.\d+)?)(?:\*?x\^(\d+))?");
+            double[] coefs = new double[int.Parse(matches[^1].Groups[3].Value) + 1];
+
+            coefs[matches[0].Groups[3].Success ? int.Parse(matches[0].Groups[3].Value) : 0] =
+                double.Parse(matches[0].Groups[1].Value + matches[0].Groups[2].Value);
+
+            for (int i = 1; i < matches.Count; ++i)
+            {
+                coefs[int.Parse(matches[i].Groups[3].Value)] =
+                    double.Parse(matches[i].Groups[1].Value + matches[i].Groups[2].Value);
+            }
+            return new Polynomial(coefs);
+        }
 
         public static bool TryParse(string s, out Polynomial poly)
         {
