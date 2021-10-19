@@ -21,7 +21,21 @@ namespace Polynomial
         public double this[int index]
         {
             get => _coefs[index];
-            set => _coefs[index] = value;
+            set
+            {
+                try
+                {
+                    _coefs[index] = value;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    if (value != 0)
+                    {
+                        EnsureSize(index + 1);
+                        _coefs[index] = value;
+                    }
+                }
+            }
         }
 
         //public static Polynomial Parse(string s) => new Polynomial(s);
@@ -89,12 +103,7 @@ namespace Polynomial
 
         public Polynomial Add(Polynomial other)
         {
-            if (_coefs.Length < other._coefs.Length)
-            {
-                double[] coefs = new double[other._coefs.Length];
-                for (int i = 0; i < _coefs.Length; ++i) coefs[i] = _coefs[i];
-                _coefs = coefs;
-            }
+            EnsureSize(other._coefs.Length);
 
             for (int i = 0; i < Math.Min(_coefs.Length, other._coefs.Length); ++i)
             {
@@ -127,6 +136,16 @@ namespace Polynomial
                 _coefs[i] *= num;
             }
             return this;
+        }
+
+        void EnsureSize(long size)
+        {
+            if (_coefs.Length < size)
+            {
+                double[] coefs = new double[size];
+                for (int i = 0; i < _coefs.Length; ++i) coefs[i] = _coefs[i];
+                _coefs = coefs;
+            }
         }
     }
 }
